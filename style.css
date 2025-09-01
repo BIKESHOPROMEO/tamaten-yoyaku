@@ -1,0 +1,136 @@
+body {
+  font-family: sans-serif;
+  padding: 1em;
+  background-color: #f9f9f9;
+  max-width: 1200px;
+  margin: auto;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 1em;
+}
+
+.nav-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1em;
+  margin-bottom: 1em;
+  position: relative;
+  z-index: 10;
+}
+
+.nav-buttons button {
+  margin: 0;
+  padding: 0.5em 1em;
+  font-size: 1.1rem;
+  border: none;
+  background-color: #0078d4;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.nav-buttons button:hover {
+  background-color: #005fa3;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1em;
+  font-size: 1rem;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 0.5em;
+  text-align: center;
+}
+
+.available {
+  background-color: #e0f7fa;
+  cursor: pointer;
+}
+
+.available:hover {
+  background-color: #80deea;
+  font-weight: bold;
+  border: 2px solid #0078d4;
+}
+
+.hidden {
+  display: none;
+}
+
+#form {
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.1em;
+  padding: 1em;
+  background-color: #fff3cd;
+  border: 1px solid #ffeeba;
+  border-radius: 4px;
+}
+
+/* 既存のスタイルがここまであるとしたら… */
+
+/* ?? この下に追加してOK！ */
+/* 横スクロールを許可するラッパー */
+/* 横スクロールを許可するラッパー */
+#calendar {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* テーブル全体のスタイル */
+#calendar table {
+  border-collapse: collapse;
+  width: max-content;
+  min-width: 700px;
+}
+
+/* セルの基本スタイル */
+#calendar th, #calendar td {
+  border: 1px solid #ccc;
+  padding: 0.5em;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* 時間列（左端）を固定 */
+#calendar th:first-child,
+#calendar td:first-child {
+  position: sticky;
+  left: 0;
+  background-color: #fff;
+  z-index: 2;
+}
+
+.unavailable {
+  background-color: #eee;
+  color: #999;
+  cursor: not-allowed;
+}
+
+th.sunday {
+  color: red;
+}
+
+th.saturday {
+  color: blue;
+}
+
+/* 読み込み中の表示スタイル */
+#calendar.loading::before {
+  content: "読み込み中...";
+  display: block;
+  text-align: center;
+  padding: 1em;
+  font-weight: bold;
+  color: #666;
+  background-color: #fff;
+  border: 1px dashed #ccc;
+  margin-bottom: 1em;
+}
