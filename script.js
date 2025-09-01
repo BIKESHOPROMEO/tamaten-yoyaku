@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const isFuture = d.date > todayStr;
 
       const isAvailable = availableSlots.some(slot => {
-        return slot.date === d.date && slot.time === hour;
+    return slot.date === d.date && slot.time === hour && slot.available;
       });
 
       if (isPast) {
