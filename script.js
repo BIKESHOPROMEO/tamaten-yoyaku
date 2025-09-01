@@ -36,10 +36,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const todayStr = new Date().toISOString().split("T")[0];
 
   const response = await fetch("/api/calendar-ava");
-  const result = await response.json();
-  const availableSlots = result.slots;
+  const text = await response.text();
 
-  const table = document.createElement("table");
+    let availableSlots = [];
+  try {
+    const result = JSON.parse(text);
+    availableSlots = result.slots || [];
+  } catch (err) {
+    console.error("JSONパース失敗:", text);
+  }
 
   // ヘッダー生成（省略）
 

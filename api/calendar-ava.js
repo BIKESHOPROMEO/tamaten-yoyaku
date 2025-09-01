@@ -7,13 +7,12 @@ export default async function handler(req, res) {
 
   try {
     const response = await fetch(`${GAS_URL}?action=availability`);
-    const text = await response.text(); // ← HTMLが返ってくる可能性に備えて
+    const text = await response.text();
 
     try {
-      const data = JSON.parse(text); // ← 明示的にJSONとしてパース
+      const data = JSON.parse(text);
       return res.status(200).json({ slots: data });
     } catch (parseErr) {
-      console.error("JSONパース失敗:", text);
       return res.status(500).json({ message: "JSONパース失敗", raw: text });
     }
   } catch (err) {
