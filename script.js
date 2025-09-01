@@ -99,3 +99,4 @@ document.addEventListener("DOMContentLoaded", () => {
   table.appendChild(tbody);
   calendarEl.appendChild(table);
 }
+});
