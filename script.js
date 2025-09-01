@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let availableSlots = [];
   try {
     const result = JSON.parse(text);
-    availableSlots = result.slots.slots || []; // ← ここに入れる！
+    const availableSlots = result.slots.slots || []; // ← ここに入れる！
     console.log("availableSlots:", availableSlots); // ← デバッグ用にもおすすめ
   } catch (err) {
     console.error("JSONパース失敗:", text);
