@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   dates.forEach(d => {
     const cell = document.createElement("td");
-    const dayClass = getDayClass(d,date);
+    const dayClass = getDayClass(d.date);
     const todayStr = new Date().toISOString().split("T")[0];
     const isPast = d.date < todayStr;
     const isToday = d.date === todayStr;
