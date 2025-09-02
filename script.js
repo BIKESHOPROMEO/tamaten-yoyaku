@@ -27,6 +27,19 @@ document.addEventListener("DOMContentLoaded", () => {
     return [...Array(endHour - startHour + 1)].map((_, i) => `${startHour + i}:00`);
   }
 
+    function getDayClass(dateStr) {
+    const date = new Date(dateStr);
+    const day = date.getDay();
+
+    if (day === 0) return "sunday";     // 日曜
+    if (day === 6) return "saturday";   // 土曜
+
+    // 祝日判定（仮で空の関数）
+    if (isHoliday(dateStr)) return "holiday";
+
+    return "";
+  }
+
   async function renderCalendar() {
     calendarEl.innerHTML = "";
 
@@ -111,7 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
   table.appendChild(tbody);
   calendarEl.appendChild(table);
 
-} // ← ✅ これが抜けてた！
+} // ← ? これが抜けてた！
 
 
   // 初期表示
@@ -129,5 +142,4 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 });
-
 
