@@ -27,6 +27,11 @@ document.addEventListener("DOMContentLoaded", () => {
     return [...Array(endHour - startHour + 1)].map((_, i) => `${startHour + i}:00`);
   }
 
+    function isHoliday(dateStr) {
+    const date = new Date(dateStr);
+    return holiday_jp.isHoliday(date);
+  }
+
     function getDayClass(dateStr) {
     const date = new Date(dateStr);
     const day = date.getDay();
@@ -40,7 +45,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const date = new Date(dateStr);
     return holiday_jp.isHoliday(date);
   }
-
 
     return "";
   }
