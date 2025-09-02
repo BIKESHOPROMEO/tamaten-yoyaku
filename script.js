@@ -108,6 +108,12 @@ document.addEventListener("DOMContentLoaded", () => {
   tbody.appendChild(row);
 });
 
+  table.appendChild(tbody);
+  calendarEl.appendChild(table);
+
+} // ← ✅ これが抜けてた！
+
+
   // 初期表示
   renderCalendar();
 
@@ -123,4 +129,5 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 });
+
 
