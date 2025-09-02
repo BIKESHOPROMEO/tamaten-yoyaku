@@ -114,15 +114,13 @@ th, td {
   cursor: not-allowed;
 }
 
-td.sunday,
-td.holiday {
-  background-color: #ffe5e5; /* 薄い赤系 */
-  color: #d00;
+th.sunday,
+th.holiday {
+  color: red;
 }
 
-td.saturday {
-  background-color: #e5f0ff; /* 薄い青系 */
-  color: #005fa3;
+th.saturday {
+  color: blue;
 }
 
 /* 読み込み中の表示スタイル */
