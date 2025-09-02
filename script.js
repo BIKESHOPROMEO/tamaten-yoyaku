@@ -28,16 +28,21 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
     function isHoliday(dateStr) {
-    if (!dateStr || typeof holiday_jp?.isHoliday !== "function") return false;
-    const date = new Date(dateStr);
-    return holiday_jp.isHoliday(date);
-  }
+      try {
+        if (!dateStr || typeof holiday_jp?.isHoliday !== "function") return false;
+        const date = new Date(dateStr);
+        return holiday_jp.isHoliday(date);
+      } catch (e) {
+        console.warn("祝日判定エラー:", e);
+        return false;
+      }
+    }
 
     function getDayClass(dateStr) {
       const date = new Date(dateStr);
       const day = date.getDay();
 
-      //if (isHoliday(dateStr)) return "holiday"; // 祝日優先
+      if (isHoliday(dateStr)) return "holiday"; // 祝日優先
       if (day === 0) return "sunday";           // 日曜
       if (day === 6) return "saturday";         // 土曜
 
