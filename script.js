@@ -34,8 +34,12 @@ document.addEventListener("DOMContentLoaded", () => {
     if (day === 0) return "sunday";     // 日曜
     if (day === 6) return "saturday";   // 土曜
 
-    // 祝日判定（仮で空の関数）
-    if (isHoliday(dateStr)) return "holiday";
+    // 祝日判定
+    function isHoliday(dateStr) {
+    const date = new Date(dateStr);
+    return holiday_jp.isHoliday(date);
+  }
+
 
     return "";
   }
