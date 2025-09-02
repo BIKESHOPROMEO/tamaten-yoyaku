@@ -30,22 +30,34 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   async function renderCalendar() {
+  const calendarEl = document.getElementById("calendar");
   calendarEl.innerHTML = "";
+
   const dates = generateDates(weekOffset);
   const hours = generateHours();
-  const todayStr = new Date().toISOString().split("T")[0];
 
-  const response = await fetch("/api/calendar-ava");
-  const text = await response.text();
+  const table = document.createElement("table");
+  const tbody = document.createElement("tbody");
 
-    let availableSlots = [];
-  try {
-    const result = JSON.parse(text);
-    const availableSlots = result.slots.slots || []; // ← ここに入れる！
-    console.log("availableSlots:", availableSlots); // ← デバッグ用にもおすすめ
-  } catch (err) {
-    console.error("JSONパース失敗:", text);
-  }
+  hours.forEach(hour => {
+    const row = document.createElement("tr");
+    const timeCell = document.createElement("td");
+    timeCell.textContent = hour;
+    row.appendChild(timeCell);
+
+    dates.forEach(d => {
+      const cell = document.createElement("td");
+      cell.textContent = "◎"; // ← 仮で全部◎表示
+      cell.classList.add("available");
+      row.appendChild(cell);
+    });
+
+    tbody.appendChild(row);
+  });
+
+  table.appendChild(tbody);
+  calendarEl.appendChild(table);
+}
 
 
   // ヘッダー生成（省略）
@@ -99,4 +111,5 @@ document.addEventListener("DOMContentLoaded", () => {
   table.appendChild(tbody);
   calendarEl.appendChild(table);
 }
+
 });
