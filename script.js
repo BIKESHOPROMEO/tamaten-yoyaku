@@ -7,8 +7,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const endHour = 18;
   let weekOffset = 0;
 
-
-
   function generateDates(offset) {
     const today = new Date();
     const currentDay = today.getDay();
@@ -29,87 +27,62 @@ document.addEventListener("DOMContentLoaded", () => {
     return [...Array(endHour - startHour + 1)].map((_, i) => `${startHour + i}:00`);
   }
 
-  async function renderCalendar() {
-  const calendarEl = document.getElementById("calendar");
-  calendarEl.innerHTML = "";
+  function renderCalendar() {
+    calendarEl.innerHTML = "";
 
-  const dates = generateDates(weekOffset);
-  const hours = generateHours();
+    const dates = generateDates(weekOffset);
+    const hours = generateHours();
 
-  const table = document.createElement("table");
-  const tbody = document.createElement("tbody");
+    const table = document.createElement("table");
 
-  hours.forEach(hour => {
-    const row = document.createElement("tr");
-    const timeCell = document.createElement("td");
-    timeCell.textContent = hour;
-    row.appendChild(timeCell);
+    // ヘッダー行（曜日ラベル）
+    const thead = document.createElement("thead");
+    const headerRow = document.createElement("tr");
+    headerRow.appendChild(document.createElement("th")); // 時間列の空白
 
     dates.forEach(d => {
-      const cell = document.createElement("td");
-      cell.textContent = "◎"; // ← 仮で全部◎表示
-      cell.classList.add("available");
-      row.appendChild(cell);
+      const th = document.createElement("th");
+      th.textContent = d.label;
+      headerRow.appendChild(th);
     });
 
-    tbody.appendChild(row);
-  });
+    thead.appendChild(headerRow);
+    table.appendChild(thead);
 
-  table.appendChild(tbody);
-  calendarEl.appendChild(table);
-}
+    // 本体
+    const tbody = document.createElement("tbody");
 
+    hours.forEach(hour => {
+      const row = document.createElement("tr");
+      const timeCell = document.createElement("td");
+      timeCell.textContent = hour;
+      row.appendChild(timeCell);
 
-  // ヘッダー生成（省略）
-
-  const tbody = document.createElement("tbody");
-  hours.forEach(hour => {
-    const row = document.createElement("tr");
-    const timeCell = document.createElement("td");
-    timeCell.textContent = hour;
-    row.appendChild(timeCell);
-
-    dates.forEach(d => {
-      const cell = document.createElement("td");
-      const isPast = d.date < todayStr;
-      const isToday = d.date === todayStr;
-      const isFuture = d.date > todayStr;
-
-      const isAvailable = availableSlots.some(slot => {
-    return slot.date === d.date && slot.time === hour && slot.available;
+      dates.forEach(d => {
+        const cell = document.createElement("td");
+        cell.textContent = "◎"; // 仮表示
+        cell.classList.add("available");
+        row.appendChild(cell);
       });
 
-      if (isPast) {
-        cell.textContent = "×";
-        cell.classList.add("unavailable");
-      } else if (isToday) {
-        cell.textContent = "◎";
-        cell.classList.add("available");
-        cell.addEventListener("click", () => {
-          alert("【本日の予約は直接店舗へお電話にてお問い合わせ下さい】");
-        });
-      } else if (isFuture && isAvailable) {
-        cell.textContent = "◎";
-        cell.classList.add("available");
-        cell.addEventListener("click", () => {
-          const url = new URL("https://yoyaku-form.vercel.app/");
-          url.searchParams.set("date", d.date);
-          url.searchParams.set("time", hour);
-          window.location.href = url.toString();
-        });
-      } else {
-        cell.textContent = "×";
-        cell.classList.add("unavailable");
-      }
-
-      row.appendChild(cell);
+      tbody.appendChild(row);
     });
 
-    tbody.appendChild(row);
+    table.appendChild(tbody);
+    calendarEl.appendChild(table);
+  }
+
+  // 初期表示
+  renderCalendar();
+
+  // ボタンイベント
+  prevBtn.addEventListener("click", () => {
+    weekOffset--;
+    renderCalendar();
   });
 
-  table.appendChild(tbody);
-  calendarEl.appendChild(table);
-}
-
+  nextBtn.addEventListener("click", () => {
+    weekOffset++;
+    renderCalendar();
+  });
 });
