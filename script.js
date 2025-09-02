@@ -33,6 +33,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const dates = generateDates(weekOffset);
     const hours = generateHours();
 
+    let availableSlots = [];
+  try {
+    const response = await fetch("/api/calendar-ava");
+    const result = await response.json();
+    availableSlots = result.slots || [];
+    console.log("availableSlots:", availableSlots); // ← デバッグ用
+  } catch (err) {
+    console.error("API取得失敗:", err);
+  }
+
     const table = document.createElement("table");
 
     // ヘッダー行（曜日ラベル）
@@ -53,24 +63,50 @@ document.addEventListener("DOMContentLoaded", () => {
     const tbody = document.createElement("tbody");
 
     hours.forEach(hour => {
-      const row = document.createElement("tr");
-      const timeCell = document.createElement("td");
-      timeCell.textContent = hour;
-      row.appendChild(timeCell);
+  const row = document.createElement("tr");
+  const timeCell = document.createElement("td");
+  timeCell.textContent = hour;
+  row.appendChild(timeCell);
 
-      dates.forEach(d => {
-        const cell = document.createElement("td");
-        cell.textContent = "◎"; // 仮表示
-        cell.classList.add("available");
-        row.appendChild(cell);
-      });
+  dates.forEach(d => {
+    const cell = document.createElement("td");
+    const todayStr = new Date().toISOString().split("T")[0];
+    const isPast = d.date < todayStr;
+    const isToday = d.date === todayStr;
+    const isFuture = d.date > todayStr;
 
-      tbody.appendChild(row);
+    const isAvailable = availableSlots.some(slot => {
+      return slot.date === d.date && slot.time === hour && slot.available;
     });
 
-    table.appendChild(tbody);
-    calendarEl.appendChild(table);
-  }
+    if (isPast) {
+      cell.textContent = "×";
+      cell.classList.add("unavailable");
+    } else if (isToday) {
+      cell.textContent = "◎";
+      cell.classList.add("available");
+      cell.addEventListener("click", () => {
+        alert("【本日の予約は直接店舗へお電話にてお問い合わせ下さい】");
+      });
+    } else if (isFuture && isAvailable) {
+      cell.textContent = "◎";
+      cell.classList.add("available");
+      cell.addEventListener("click", () => {
+        const url = new URL("https://yoyaku-form.vercel.app/");
+        url.searchParams.set("date", d.date);
+        url.searchParams.set("time", hour);
+        window.location.href = url.toString();
+      });
+    } else {
+      cell.textContent = "×";
+      cell.classList.add("unavailable");
+    }
+
+    row.appendChild(cell);
+  });
+
+  tbody.appendChild(row);
+});
 
   // 初期表示
   renderCalendar();
