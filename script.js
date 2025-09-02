@@ -86,7 +86,6 @@ document.addEventListener("DOMContentLoaded", () => {
   row.appendChild(timeCell);
 
   dates.forEach(d => {
-    const th = document.createElement("th");
     th.textContent = d.label;
 
     const dayClass = getDayClass(d.date); // ← 曜日クラス取得
@@ -145,5 +144,4 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 });
-
 
