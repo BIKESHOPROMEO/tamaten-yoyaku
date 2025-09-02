@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return [...Array(endHour - startHour + 1)].map((_, i) => `${startHour + i}:00`);
   }
 
-  asyne function renderCalendar() {
+  async function renderCalendar() {
     calendarEl.innerHTML = "";
 
     const dates = generateDates(weekOffset);
@@ -123,3 +123,4 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 });
+
