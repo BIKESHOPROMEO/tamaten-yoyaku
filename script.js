@@ -86,18 +86,14 @@ document.addEventListener("DOMContentLoaded", () => {
   row.appendChild(timeCell);
 
   dates.forEach(d => {
-  const cell = document.createElement("td");
-  const dayClass = getDayClass(d.date);
-  if (dayClass) cell.classList.add(dayClass);
+  const th = document.createElement("th");
+  th.textContent = d.label;
 
-  const todayStr = new Date().toISOString().split("T")[0];
-  const isPast = d.date < todayStr;
-  const isToday = d.date === todayStr;
-  const isFuture = d.date > todayStr;
+  const dayClass = getDayClass(d.date); // ← 曜日クラス取得
+  if (dayClass) th.classList.add(dayClass); // ← クラス付ける
 
-  const isAvailable = availableSlots.some(slot => {
-    return slot.date === d.date && slot.time === hour && slot.available;
-  });
+  headerRow.appendChild(th);
+});
 
   if (isPast) {
     cell.textContent = "×";
