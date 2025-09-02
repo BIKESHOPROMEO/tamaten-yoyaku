@@ -40,12 +40,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (day === 0) return "sunday";     // 日曜
     if (day === 6) return "saturday";   // 土曜
 
-    // 祝日判定
-    function isHoliday(dateStr) {
-    const date = new Date(dateStr);
-    return holiday_jp.isHoliday(date);
-  }
-
     return "";
   }
 
@@ -92,6 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   dates.forEach(d => {
     const cell = document.createElement("td");
+    const dayClass = getDayClass(d,date);
     const todayStr = new Date().toISOString().split("T")[0];
     const isPast = d.date < todayStr;
     const isToday = d.date === todayStr;
