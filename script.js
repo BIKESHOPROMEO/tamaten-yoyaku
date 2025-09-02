@@ -104,6 +104,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const isToday = d.date === todayStr;
   const isFuture = d.date > todayStr;
 
+    console.log("判定:", d.date, getDayClass(d.date));
+
   const isAvailable = availableSlots.some(slot => {
     return slot.date === d.date && slot.time === hour && slot.available;
   });
