@@ -28,6 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
     function isHoliday(dateStr) {
+    if (!dateStr || typeof holiday_jp?.isHoliday !== "function") return false;
     const date = new Date(dateStr);
     return holiday_jp.isHoliday(date);
   }
