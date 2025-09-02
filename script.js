@@ -28,15 +28,15 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
     function isHoliday(dateStr) {
-      try {
-        if (!dateStr || typeof holiday_jp?.isHoliday !== "function") return false;
-        const date = new Date(dateStr);
-        return holiday_jp.isHoliday(date);
-      } catch (e) {
-        console.warn("祝日判定エラー:", e);
-        return false;
-      }
-    }
+  try {
+    if (!dateStr || typeof holiday_jp?.isHoliday !== "function") return false;
+    const date = new Date(dateStr);
+    return holiday_jp.isHoliday(date);
+  } catch (e) {
+    console.warn("祝日判定エラー:", e);
+    return false;
+  }
+}
 
     function getDayClass(dateStr) {
       const date = new Date(dateStr);
