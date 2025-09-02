@@ -34,15 +34,15 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
     function getDayClass(dateStr) {
-    const date = new Date(dateStr);
-    const day = date.getDay();
+      const date = new Date(dateStr);
+      const day = date.getDay();
 
-    //if (isHoliday(dateStr)) return "holiday"; //祝日優先
-    if (day === 0) return "sunday";     // 日曜
-    if (day === 6) return "saturday";   // 土曜
+      if (isHoliday(dateStr)) return "holiday"; // 祝日優先
+      if (day === 0) return "sunday";           // 日曜
+      if (day === 6) return "saturday";         // 土曜
 
-    return "";
-  }
+      return "";
+    }
 
   async function renderCalendar() {
     calendarEl.innerHTML = "";
@@ -70,6 +70,10 @@ document.addEventListener("DOMContentLoaded", () => {
     dates.forEach(d => {
       const th = document.createElement("th");
       th.textContent = d.label;
+
+      const dayClass = getDayClass(d.date); // ← 曜日クラス取得
+      if (dayClass) th.classList.add(dayClass); // ← クラス付ける
+
       headerRow.appendChild(th);
     });
 
