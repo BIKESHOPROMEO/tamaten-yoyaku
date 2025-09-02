@@ -86,39 +86,44 @@ document.addEventListener("DOMContentLoaded", () => {
   row.appendChild(timeCell);
 
   dates.forEach(d => {
-    th.textContent = d.label;
+  const cell = document.createElement("td");
+  const dayClass = getDayClass(d.date);
+  if (dayClass) cell.classList.add(dayClass);
 
-    const dayClass = getDayClass(d.date); // ← 曜日クラス取得
-    if (dayClass) th.classList.add(dayClass); // ← クラス付ける
+  const todayStr = new Date().toISOString().split("T")[0];
+  const isPast = d.date < todayStr;
+  const isToday = d.date === todayStr;
+  const isFuture = d.date > todayStr;
 
-    headerRow.appendChild(th);
+  const isAvailable = availableSlots.some(slot => {
+    return slot.date === d.date && slot.time === hour && slot.available;
   });
 
-    if (isPast) {
-      cell.textContent = "×";
-      cell.classList.add("unavailable");
-    } else if (isToday) {
-      cell.textContent = "◎";
-      cell.classList.add("available");
-      cell.addEventListener("click", () => {
-        alert("【本日の予約は直接店舗へお電話にてお問い合わせ下さい】");
-      });
-    } else if (isFuture && isAvailable) {
-      cell.textContent = "◎";
-      cell.classList.add("available");
-      cell.addEventListener("click", () => {
-        const url = new URL("https://yoyaku-form.vercel.app/");
-        url.searchParams.set("date", d.date);
-        url.searchParams.set("time", hour);
-        window.location.href = url.toString();
-      });
-    } else {
-      cell.textContent = "×";
-      cell.classList.add("unavailable");
-    }
+  if (isPast) {
+    cell.textContent = "×";
+    cell.classList.add("unavailable");
+  } else if (isToday) {
+    cell.textContent = "◎";
+    cell.classList.add("available");
+    cell.addEventListener("click", () => {
+      alert("【本日の予約は直接店舗へお電話にてお問い合わせ下さい】");
+    });
+  } else if (isFuture && isAvailable) {
+    cell.textContent = "◎";
+    cell.classList.add("available");
+    cell.addEventListener("click", () => {
+      const url = new URL("https://yoyaku-form.vercel.app/");
+      url.searchParams.set("date", d.date);
+      url.searchParams.set("time", hour);
+      window.location.href = url.toString();
+    });
+  } else {
+    cell.textContent = "×";
+    cell.classList.add("unavailable");
+  }
 
-    row.appendChild(cell);
-  });
+  row.appendChild(cell);
+});
 
   tbody.appendChild(row);
 });
