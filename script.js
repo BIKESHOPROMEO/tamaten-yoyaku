@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let availableSlots = [];
 
     try {
-      const slotRes = await fetch("/api/calendar-ava");
+      const slotRes = await fetch("/api/calendar-ava?action=slots");
       const slotData = await slotRes.json();
       availableSlots = slotData.slots || [];
     } catch (err) {
