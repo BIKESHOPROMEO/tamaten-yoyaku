@@ -27,21 +27,13 @@ document.addEventListener("DOMContentLoaded", () => {
     return [...Array(endHour - startHour + 1)].map((_, i) => `${startHour + i}:00`);
   }
 
-    function isHoliday(dateStr) {
-     // holidayData配列の中に、引数で渡された日付と一致するデータがあるかチェック
-     return holidayData.some(h => h.date === dateStr);
- }
-
-    function getDayClass(dateStr) {
-      const date = new Date(dateStr);
-      const day = date.getDay();
-
-      if (isHoliday(dateStr)) return "holiday"; // 祝日優先
-      if (day === 0) return "sunday";           // 日曜
-      if (day === 6) return "saturday";         // 土曜
-
-      return "";
-    }
+  function getDayClass(dateStr) {
+    const date = new Date(dateStr);
+    const day = date.getDay();
+    if (day === 0) return "sunday";
+    if (day === 6) return "saturday";
+    return "";
+  }
 
   async function renderCalendar() {
     calendarEl.innerHTML = "";
@@ -50,22 +42,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const hours = generateHours();
 
     let availableSlots = [];
-    let holidayData = [];  
 
-  try {
-    const slotRes = await fetch("/api/calendar-ava?action=slots");
-    const holidayRes = await fetch("/api/calendar-ava?action=holidays");
-
-   const slotData = await slotRes.json();
-   const holidayJson = await holidayRes.json();
-
-    availableSlots = slotData.slots || [];
-    holidayData = holidayJson.holidays || [];
-  } catch (err) {
-    console.error("API取得失敗:", err);
-    availableSlots = [];
-    holidayData = [];
-  }
+    try {
+      const slotRes = await fetch("/api/calendar-ava?action=slots");
+      const slotData = await slotRes.json();
+      availableSlots = slotData.slots || [];
+    } catch (err) {
+      console.error("API取得失敗:", err);
+      availableSlots = [];
+    }
 
     const table = document.createElement("table");
 
@@ -77,10 +62,8 @@ document.addEventListener("DOMContentLoaded", () => {
     dates.forEach(d => {
       const th = document.createElement("th");
       th.textContent = d.label;
-
-      const dayClass = getDayClass(d.date); // ← 曜日クラス取得
-      if (dayClass) th.classList.add(dayClass); // ← クラス付ける
-
+      const dayClass = getDayClass(d.date);
+      if (dayClass) th.classList.add(dayClass);
       headerRow.appendChild(th);
     });
 
@@ -91,61 +74,57 @@ document.addEventListener("DOMContentLoaded", () => {
     const tbody = document.createElement("tbody");
 
     hours.forEach(hour => {
-  const row = document.createElement("tr");
-  const timeCell = document.createElement("td");
-  timeCell.textContent = hour;
-  row.appendChild(timeCell);
+      const row = document.createElement("tr");
+      const timeCell = document.createElement("td");
+      timeCell.textContent = hour;
+      row.appendChild(timeCell);
 
-  dates.forEach(d => {
-  const cell = document.createElement("td"); // ? これが必要！
-  const dayClass = getDayClass(d.date);
-  if (dayClass) cell.classList.add(dayClass);
+      dates.forEach(d => {
+        const cell = document.createElement("td");
+        const dayClass = getDayClass(d.date);
+        if (dayClass) cell.classList.add(dayClass);
 
-  const todayStr = new Date().toISOString().split("T")[0];
-  const isPast = d.date < todayStr;
-  const isToday = d.date === todayStr;
-  const isFuture = d.date > todayStr;
+        const todayStr = new Date().toISOString().split("T")[0];
+        const isPast = d.date < todayStr;
+        const isToday = d.date === todayStr;
+        const isFuture = d.date > todayStr;
 
-    console.log("判定:", d.date, getDayClass(d.date));
+        const isAvailable = availableSlots.some(slot => {
+          return slot.date === d.date && slot.time === hour && slot.available;
+        });
 
-  const isAvailable = availableSlots.some(slot => {
-    return slot.date === d.date && slot.time === hour && slot.available;
-  });
+        if (isPast) {
+          cell.textContent = "×";
+          cell.classList.add("unavailable");
+        } else if (isToday) {
+          cell.textContent = "◎";
+          cell.classList.add("available");
+          cell.addEventListener("click", () => {
+            alert("【本日の予約は直接店舗へお電話にてお問い合わせ下さい】");
+          });
+        } else if (isFuture && isAvailable) {
+          cell.textContent = "◎";
+          cell.classList.add("available");
+          cell.addEventListener("click", () => {
+            const url = new URL("https://yoyaku-form.vercel.app/");
+            url.searchParams.set("date", d.date);
+            url.searchParams.set("time", hour);
+            window.location.href = url.toString();
+          });
+        } else {
+          cell.textContent = "×";
+          cell.classList.add("unavailable");
+        }
 
-  if (isPast) {
-    cell.textContent = "×";
-    cell.classList.add("unavailable");
-  } else if (isToday) {
-    cell.textContent = "◎";
-    cell.classList.add("available");
-    cell.addEventListener("click", () => {
-      alert("【本日の予約は直接店舗へお電話にてお問い合わせ下さい】");
+        row.appendChild(cell);
+      });
+
+      tbody.appendChild(row);
     });
-  } else if (isFuture && isAvailable) {
-    cell.textContent = "◎";
-    cell.classList.add("available");
-    cell.addEventListener("click", () => {
-      const url = new URL("https://yoyaku-form.vercel.app/");
-      url.searchParams.set("date", d.date);
-      url.searchParams.set("time", hour);
-      window.location.href = url.toString();
-    });
-  } else {
-    cell.textContent = "×";
-    cell.classList.add("unavailable");
+
+    table.appendChild(tbody);
+    calendarEl.appendChild(table);
   }
-
-  row.appendChild(cell);
-});
-
-  tbody.appendChild(row);
-});
-
-  table.appendChild(tbody);
-  calendarEl.appendChild(table);
-
-} // ← ? これが抜けてた！
-
 
   // 初期表示
   renderCalendar();
@@ -160,6 +139,4 @@ document.addEventListener("DOMContentLoaded", () => {
     weekOffset++;
     renderCalendar();
   });
-
 });
-
