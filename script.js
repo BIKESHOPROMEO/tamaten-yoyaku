@@ -50,17 +50,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const hours = generateHours();
 
     let availableSlots = [];
-    let holidayData = [];
+    let holidayData = [];  
+
   try {
     const slotRes = await fetch("/api/calendar-ava?action=slots");
     const holidayRes = await fetch("/api/calendar-ava?action=holidays");
 
-    const slotData = await slotRes.json();
-    const holidayData = await holidayRes.json();
+   const slotData = await slotRes.json();
+   const holidayJson = await holidayRes.json();
 
-    const availableSlots = slotData.slots || [];
-    const holidays = holidayData.holidays || [];
-      } catch (err) {
+    availableSlots = slotData.slots || [];
+    holidayData = holidayJson.holidays || [];
+  } catch (err) {
     console.error("API取得失敗:", err);
     availableSlots = [];
     holidayData = [];
