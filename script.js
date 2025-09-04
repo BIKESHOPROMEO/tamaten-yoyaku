@@ -28,15 +28,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
     function isHoliday(dateStr) {
-  try {
-    if (!dateStr || typeof holiday_jp?.isHoliday !== "function") return false;
-    const date = new Date(dateStr);
-    return holiday_jp.isHoliday(date);
-  } catch (e) {
-    console.warn("祝日判定エラー:", e);
-    return false;
-  }
-}
+     // holidayData配列の中に、引数で渡された日付と一致するデータがあるかチェック
+     return holidayData.some(h => h.date === dateStr);
+ }
 
     function getDayClass(dateStr) {
       const date = new Date(dateStr);
@@ -56,13 +50,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const hours = generateHours();
 
     let availableSlots = [];
+    let holidayData = [];
   try {
     const response = await fetch("/api/calendar-ava");
     const result = await response.json();
     availableSlots = result.slots || [];
+    holidayData = result.holidays || [];
     console.log("availableSlots:", availableSlots); // ← デバッグ用
+    console.log("holidayData:", holidayData);
   } catch (err) {
     console.error("API取得失敗:", err);
+    availableSlots = [];
+    holidayData = [];
   }
 
     const table = document.createElement("table");
