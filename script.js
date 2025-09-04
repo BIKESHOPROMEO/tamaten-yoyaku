@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let availableSlots = [];
 
     try {
-      const response = await fetch("/api/calendar-ava?action=availability");
+      const response = await fetch("/api/calendar-ava");
       const result = await response.json();
       availableSlots = result.slots || [];
       console.log("availableSlots:",availableSlots);
@@ -139,4 +139,5 @@ document.addEventListener("DOMContentLoaded", () => {
     weekOffset++;
     renderCalendar();
   });
+
 });
