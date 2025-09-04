@@ -49,7 +49,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const dates = generateDates(weekOffset);
     const hours = generateHours();
 
-    let availableSlots = [];    
+    let availableSlots = [];
+    let holidayData = [];
   try {
     const response = await fetch("/api/calendar-ava");
     const result = await response.json();
