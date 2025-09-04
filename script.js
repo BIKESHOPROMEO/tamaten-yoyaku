@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let availableSlots = [];
 
     try {
-      const response = await fetch("/api/calendar-ava");
+      const response = await fetch("/api/calendar-ava?action=availability");
       const result = await response.json();
       availableSlots = result.slots || [];
       console.log("availableSlots:",availableSlots);
