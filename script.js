@@ -52,13 +52,15 @@ document.addEventListener("DOMContentLoaded", () => {
     let availableSlots = [];
     let holidayData = [];
   try {
-    const response = await fetch("/api/calendar-ava");
-    const result = await response.json();
-    availableSlots = result.slots || [];
-    holidayData = result.holidays || [];
-    console.log("availableSlots:", availableSlots); // ← デバッグ用
-    console.log("holidayData:", holidayData);
-  } catch (err) {
+    const slotRes = await fetch("/api/calendar-ava?action=slots");
+    const holidayRes = await fetch("/api/calendar-ava?action=holidays");
+
+    const slotData = await slotRes.json();
+    const holidayData = await holidayRes.json();
+
+    const availableSlots = slotData.slots || [];
+    const holidays = holidayData.holidays || [];
+      } catch (err) {
     console.error("API取得失敗:", err);
     availableSlots = [];
     holidayData = [];
