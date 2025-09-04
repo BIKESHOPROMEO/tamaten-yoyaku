@@ -44,12 +44,12 @@ document.addEventListener("DOMContentLoaded", () => {
     let availableSlots = [];
 
     try {
-      const slotRes = await fetch("/api/calendar-ava");
-      const slotData = await slotRes.json();
-      availableSlots = slotData.slots || [];
-    } catch (err) {
-      console.error("API取得失敗:", err);
-      availableSlots = [];
+      const response = await fetch("/api/calendar-ava");
+      const result = await response.json();
+      availableSlots = result.slots || [];
+      console.log("availableSlots:",availableSlots);
+    }catch (err){
+      console.error("API取得失敗:", err);      
     }
 
     const table = document.createElement("table");
