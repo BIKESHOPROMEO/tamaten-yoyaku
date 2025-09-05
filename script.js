@@ -30,6 +30,8 @@ document.addEventListener("DOMContentLoaded", () => {
   function getDayClass(dateStr) {
     const date = new Date(dateStr);
     const day = date.getDay();
+
+    if (holiday_jp.siHoliday(date)) retaun "holiday";
     if (day === 0) return "sunday";
     if (day === 6) return "saturday";
     return "";
