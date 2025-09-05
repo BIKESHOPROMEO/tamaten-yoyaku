@@ -1,3 +1,5 @@
+console.log("holiday_jp:", typeof holiday_jp);
+
 document.addEventListener("DOMContentLoaded", () => {
   const calendarEl = document.getElementById("calendar");
   const prevBtn = document.getElementById("prevWeek");
@@ -141,5 +143,6 @@ document.addEventListener("DOMContentLoaded", () => {
     weekOffset++;
     renderCalendar();
   });
+
 
 });
