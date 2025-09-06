@@ -1,13 +1,27 @@
-console.log("holiday_jp:", typeof holiday_jp);
-
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   const calendarEl = document.getElementById("calendar");
   const prevBtn = document.getElementById("prevWeek");
   const nextBtn = document.getElementById("nextWeek");
 
+    let holidayDates = [];
+
   const startHour = 10;
   const endHour = 18;
   let weekOffset = 0;
+
+    async function fetchHolidayDates() {
+  try {
+    const res = await fetch("/api?action=holidays");
+    const result = await res.json();
+    holidayDates = result.holidays || [];
+  } catch (err) {
+    console.error("祝日一覧の取得失敗:", err);
+  }
+}
+
+  await fetchHolidayDates(); // ← 祝日一覧を取得
+  await renderCalendar();    // ← その後に描画
+
 
   function generateDates(offset) {
     const today = new Date();
@@ -33,11 +47,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const date = new Date(dateStr);
     const day = date.getDay();
 
-    if (holiday_jp.isHoliday(date)) return "holiday"; // ← これが正しい
+    if (holidayDates.includes(dateStr)) return "holiday";  // ← これが正しい
     if (day === 0) return "sunday";
     if (day === 6) return "saturday";
     return "";
-  }
+  }    
 
   async function renderCalendar() {
     calendarEl.innerHTML = "";
@@ -46,6 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const hours = generateHours();
 
     let availableSlots = [];
+    
 
     try {
       const response = await fetch("/api/calendar-ava");
@@ -54,7 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
       console.log("availableSlots:",availableSlots);
     }catch (err){
       console.error("API取得失敗:", err);      
-    }
+    }       
 
     const table = document.createElement("table");
 
@@ -143,6 +158,5 @@ document.addEventListener("DOMContentLoaded", () => {
     weekOffset++;
     renderCalendar();
   });
-
 
 });
