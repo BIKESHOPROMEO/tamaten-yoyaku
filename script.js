@@ -145,9 +145,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     calendarEl.appendChild(table);
   }
 
-  // 初期表示
-  renderCalendar();
-
   // ボタンイベント
   prevBtn.addEventListener("click", () => {
     weekOffset--;
