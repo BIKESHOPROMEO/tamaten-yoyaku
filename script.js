@@ -20,6 +20,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       loadingOverlay.style.display = "none";
     }
 
+  showLoading();
+  await new Promise(requestAnimationFrame);
+
     async function fetchHolidayDates() {
   try {
     const res = await fetch("/api/holiday");
@@ -66,8 +69,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   async function renderCalendar() {  
 
-  showLoading();
-  await new Promise(requestAnimationFrame);
+
 
     calendarEl.innerHTML = "";
 
