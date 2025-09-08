@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", async () => {
+  showLoading();
   
   const calendarEl = document.getElementById("calendar");
   const prevBtn = document.getElementById("prevWeek");
