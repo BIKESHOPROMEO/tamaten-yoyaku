@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     async function fetchHolidayDates() {
   try {
-    const res = await fetch("/api?action=holidays");
+    const res = await fetch("/api/holiday");
     const result = await res.json();
     holidayDates = result.holidays || [];
   } catch (err) {
