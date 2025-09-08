@@ -9,12 +9,14 @@ document.addEventListener("DOMContentLoaded", async () => {
   const endHour = 18;
   let weekOffset = 0;
 
+    const loadingEl = document.getElementById("loading");
+
     function showLoading() {
-      calendarEl.classList.add("loading");
+      loadingEl.style.display = "block";
     }
 
     function hideLoading() {
-      calendarEl.classList.remove("loading");
+      loadingEl.style.display = "none";
     }
 
     async function fetchHolidayDates() {

@@ -135,3 +135,22 @@ th.saturday {
   border: 1px dashed #ccc;
   margin-bottom: 1em;
 }
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #ccc;
+  border-top: 4px solid #0078d4;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 1em auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+#calendar:not(.loading) .spinner {
+  display: none;
+}
