@@ -31,8 +31,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 }
 
-  await fetchHolidayDates(); // ← 祝日一覧を取得
-  await renderCalendar();    // ← その後に描画
+
 
 
   function generateDates(offset) {
@@ -162,6 +161,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   
     hideLoading();
 }
+
+  await fetchHolidayDates(); // ← 祝日一覧を取得
+  await renderCalendar();    // ← その後に描画
 
   // ボタンイベント
   prevBtn.addEventListener("click", () => {
