@@ -20,9 +20,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       loadingOverlay.style.display = "none";
     }
 
-  showLoading();
-  await new Promise(requestAnimationFrame);
-
     async function fetchHolidayDates() {
   try {
     const res = await fetch("/api/holiday");
@@ -32,6 +29,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.error("祝日一覧の取得失敗:", err);
   }
 }
+
+  showLoading();
+  await new Promise(requestAnimationFrame);
+
 
   await fetchHolidayDates(); // ← 祝日一覧を取得
   await renderCalendar();    // ← その後に描画
