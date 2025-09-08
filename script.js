@@ -1,6 +1,8 @@
 document.addEventListener("DOMContentLoaded", async () => {
   
   showLoading();
+  await new Promise(requestAnimationFrame);
+
   const calendarEl = document.getElementById("calendar");
   const prevBtn = document.getElementById("prevWeek");
   const nextBtn = document.getElementById("nextWeek");
@@ -66,6 +68,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   }    
 
   async function renderCalendar() {  
+
+  showLoading();
+  await new Promise(requestAnimationFrame);
 
     calendarEl.innerHTML = "";
 
