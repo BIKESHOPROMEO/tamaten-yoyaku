@@ -30,10 +30,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 }
 
-  showLoading();
-  await new Promise(requestAnimationFrame);
-
-
   await fetchHolidayDates(); // ← 祝日一覧を取得
   await renderCalendar();    // ← その後に描画
 
@@ -70,7 +66,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   async function renderCalendar() {  
 
-
+  showLoading();
+  await new Promise(requestAnimationFrame);
 
     calendarEl.innerHTML = "";
 
