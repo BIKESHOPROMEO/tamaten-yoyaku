@@ -9,6 +9,14 @@ document.addEventListener("DOMContentLoaded", async () => {
   const endHour = 18;
   let weekOffset = 0;
 
+    function showLoading() {
+      calendarEl.classList.add("loading");
+    }
+
+    function hideLoading() {
+      calendarEl.classList.remove("loading");
+    }
+
     async function fetchHolidayDates() {
   try {
     const res = await fetch("/api/holiday");
@@ -53,7 +61,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     return "";
   }    
 
-  async function renderCalendar() {
+  async function renderCalendar() {  
+
+    showLoading();
+
     calendarEl.innerHTML = "";
 
     const dates = generateDates(weekOffset);
@@ -143,7 +154,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     table.appendChild(tbody);
     calendarEl.appendChild(table);
-  }
+  
+    hideLoading();
+}
 
   // ボタンイベント
   prevBtn.addEventListener("click", () => {
