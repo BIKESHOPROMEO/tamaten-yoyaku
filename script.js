@@ -128,12 +128,16 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (isPast) {
           cell.textContent = "×";
           cell.classList.add("unavailable");
-        } else if (isToday) {
+        } else if (isToday && isAvailable) {
           cell.textContent = "◎";
           cell.classList.add("available");
           cell.addEventListener("click", () => {
             alert("【本日の予約は直接店舗へお電話にてお問い合わせ下さい】");
           });
+        } else if (isToday && !isAvailable) {
+          cell.textContent = "×";
+          cell.classList.add("unavailable");
+        
         } else if (isFuture && isAvailable) {
           cell.textContent = "◎";
           cell.classList.add("available");
