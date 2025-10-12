@@ -160,3 +160,13 @@ th.saturday {
 #calendar:not(.loading) .spinner {
   display: none;
 }
+
+#calendarComment {
+  margin-top: 1em;
+  padding: 1em;
+  background-color: #f0f8ff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  color: #333;
+}
