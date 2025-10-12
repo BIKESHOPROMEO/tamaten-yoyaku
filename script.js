@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       d.setDate(sunday.getDate() + i);
       return {
         date: d.toISOString().split("T")[0],
-        label: `${d.getMonth() + 1}/${d.getDate()}(${["日","月","火","水","木","金","土"][d.getDay()]})`
+        label: `${d.getMonth() + 1}/${d.getDate()}<br>(${["日","月","火","水","木","金","土"][d.getDay()]})`
       };
     });
   }
