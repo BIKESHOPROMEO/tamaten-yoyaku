@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     dates.forEach(d => {
       const th = document.createElement("th");
-      th.textContent = d.label;
+      th.innerHTML = d.label;
       const dayClass = getDayClass(d.date);
       if (dayClass) th.classList.add(dayClass);
       headerRow.appendChild(th);
