@@ -71,22 +71,25 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const dates = generateDates(weekOffset);
     const hours = generateHours();
+    const dateSet = new Set(dates.map(d => d.date));
 
-    let availableSlots = [];    
+    let availableSlots = [];        
 
     try {
-      const response = await fetch(`/api/calendar-ava?weekOffset=${weekOffset}`);
+      const response = await fetch(`/api/calendar-ava`);
       const result = await response.json();
       availableSlots = result.slots || [];
       console.log("availableSlots:",availableSlots);
     }catch (err){
       console.error("API取得失敗:", err);      
-    }       
+    }    
 
-    const slotMap = new Map();
-      availableSlots.forEach(slot => {
-      slotMap.set(`${slot.date}_${slot.time}`, slot.available);
-    });
+     const slotMap = new Map();
+     availableSlots.forEach(slot => {
+       if (dateSet.has(slot.date)) {
+         slotMap.set(`${slot.date}_${slot.time}`, slot.available);
+       }
+   });
 
     const table = document.createElement("table");
 
