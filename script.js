@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     return "";
   }    
 
-  async function renderCalendar() {  
+  async function renderCalendar() {
 
   showLoading();
   await new Promise(requestAnimationFrame);
@@ -72,17 +72,21 @@ document.addEventListener("DOMContentLoaded", async () => {
     const dates = generateDates(weekOffset);
     const hours = generateHours();
 
-    let availableSlots = [];
-    
+    let availableSlots = [];    
 
     try {
-      const response = await fetch("/api/calendar-ava");
+      const response = await fetch(`/api/calendar-ava?weekOffset=${weekOffset}`);
       const result = await response.json();
       availableSlots = result.slots || [];
       console.log("availableSlots:",availableSlots);
     }catch (err){
       console.error("API取得失敗:", err);      
     }       
+
+    const slotMap = new Map();
+      availableSlots.forEach(slot => {
+      slotMap.set(`${slot.date}_${slot.time}`, slot.available);
+    });
 
     const table = document.createElement("table");
 
@@ -121,9 +125,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const isToday = d.date === todayStr;
         const isFuture = d.date > todayStr;
 
-        const isAvailable = availableSlots.some(slot => {
-          return slot.date === d.date && slot.time === hour && slot.available;
-        });
+        const isAvailable = slotMap.get(`${d.date}_${hour}`) === true;                  
 
         if (isPast) {
           cell.textContent = "×";
