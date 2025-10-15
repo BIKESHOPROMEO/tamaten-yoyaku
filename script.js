@@ -158,12 +158,30 @@ document.addEventListener("DOMContentLoaded", async () => {
     tbody.appendChild(tbodyFragment);
     table.appendChild(tbody);     
     calendarEl.appendChild(table);
-    
+
     hideLoading();
 }
 
   await fetchHolidayDates(); // ← 祝日一覧を取得
   await renderCalendar();    // ← その後に描画
+
+  calendarEl.addEventListener("click", (e) => {
+  const cell = e.target.closest("td.available");
+  if (!cell) return;
+
+  const date = cell.dataset.date;
+  const time = cell.dataset.time;
+  const todayStr = new Date().toISOString().split("T")[0];
+
+  if (date === todayStr) {
+    alert("【本日の予約は直接店舗へお電話にてお問い合わせ下さい】");
+  } else {
+    const url = new URL("https://yoyaku-form.vercel.app/");
+    url.searchParams.set("date", date);
+    url.searchParams.set("time", time);
+    window.location.href = url.toString();
+  }
+});
 
   // ボタンイベント
   prevBtn.addEventListener("click", () => {
