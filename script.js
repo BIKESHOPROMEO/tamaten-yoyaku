@@ -86,12 +86,13 @@ document.addEventListener("DOMContentLoaded", async () => {
       console.error("API取得失敗:", err);      
     }    
 
-     const slotMap = new Map();
-     availableSlots.forEach(slot => {
-       if (dateSet.has(slot.date)) {
-         slotMap.set(`${slot.date}_${slot.time}`, slot.available);
-       }
-   });
+     // slotMapに「予約済み枠」だけを記録
+    const slotMap = new Set();
+      availableSlots.forEach(slot => {
+        if (dateSet.has(slot.date)) {
+        slotMap.add(`${slot.date}_${slot.time}`);
+      }
+    });    
 
     const table = document.createElement("table");
 
@@ -124,27 +125,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     const cell = document.createElement("td");
     if (d.dayClass) cell.classList.add(d.dayClass);
 
-    const isPast = d.date < todayStr;
-    const isToday = d.date === todayStr;
-    const isFuture = d.date > todayStr;
-    const isAvailable = slotMap.get(`${d.date}_${hour}`) === true;
     const isWithinLimit = d.date <= maxDateStr;
+    const isPast = d.date < todayStr;    
+    const isReserved = slotMap.has(`${d.date}_${hour}`);
+    const isAvailable = !isReserved;
 
-    if (!isWithinLimit) {
+    if (!isWithinLimit || isPast) {
       cell.textContent = "×";
       cell.classList.add("unavailable");
-    } else if (isPast) {
-      cell.textContent = "×";
-      cell.classList.add("unavailable");
-    } else if (isToday && isAvailable) {
-      cell.textContent = "◎";
-      cell.classList.add("available");
-      cell.dataset.date = d.date;
-      cell.dataset.time = hour;
-    } else if (isToday && !isAvailable) {
-      cell.textContent = "×";
-      cell.classList.add("unavailable");
-    } else if (isFuture && isAvailable) {
+    } else if (isAvailable) {
       cell.textContent = "◎";
       cell.classList.add("available");
       cell.dataset.date = d.date;
