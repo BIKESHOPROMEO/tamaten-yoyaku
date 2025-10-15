@@ -157,7 +157,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     const tbody = document.createElement("tbody");
     tbody.appendChild(tbodyFragment);
     table.appendChild(tbody);     
-  
+    calendarEl.appendChild(table);
+    
     hideLoading();
 }
 
