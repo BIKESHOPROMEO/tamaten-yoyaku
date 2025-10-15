@@ -61,14 +61,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     return [...Array(endHour - startHour + 1)].map((_, i) => `${startHour + i}:00`);
   }
 
-  async function renderCalendar() {
+  async function renderCalendar() {   
 
   showLoading();
   await new Promise(requestAnimationFrame);
 
     calendarEl.innerHTML = "";
     const todayStr = new Date().toISOString().split("T")[0]; // ← renderCalendarの最初に1回だけ
-
+    const maxDate = new Date();
+    maxDate.setDate(new Date().getDate()+40);
+    const maxDateStr = maxDate.toISOString().split("T")[0];
     const dates = generateDates(weekOffset);
     const hours = generateHours();
     const dateSet = new Set(dates.map(d => d.date));
@@ -126,8 +128,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     const isToday = d.date === todayStr;
     const isFuture = d.date > todayStr;
     const isAvailable = slotMap.get(`${d.date}_${hour}`) === true;
+    const isWithinLimit = d.date <= maxDateStr;
 
-    if (isPast) {
+    if (!isWithinLimit) {
+      cell.textContent = "×";
+      cell.classList.add("unavailable");
+    } else if (isPast) {
       cell.textContent = "×";
       cell.classList.add("unavailable");
     } else if (isToday && isAvailable) {
