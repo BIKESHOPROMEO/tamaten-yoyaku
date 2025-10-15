@@ -124,11 +124,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   dates.forEach(d => {
     const cell = document.createElement("td");
     if (d.dayClass) cell.classList.add(d.dayClass);
-
-    const isWithinLimit = d.date <= maxDateStr;
-    const isPast = d.date < todayStr;    
+    
     const isReserved = slotMap.has(`${d.date}_${hour}`);
     const isAvailable = !isReserved;
+    const isWithinLimit = d.date <= maxDateStr;
+    const isPast = d.date < todayStr;    
 
     if (!isWithinLimit || isPast) {
       cell.textContent = "×";
