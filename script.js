@@ -58,8 +58,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 }
 
   function generateHours() {
-    return [...Array(endHour - startHour + 1)].map((_, i) => `${startHour + i}:00`);
-  }
+  return [...Array(endHour - startHour + 1)].map((_, i) => {
+    const h = startHour + i;
+    return `${h.toString().padStart(2, "0")}:00`; // ← "10:00" 形式で返す
+  });
+}
 
   async function renderCalendar() {   
 
@@ -188,5 +191,4 @@ document.addEventListener("DOMContentLoaded", async () => {
     weekOffset++;
     renderCalendar();
   });
-
 });
