@@ -1,5 +1,5 @@
 export default async function handler(req, res) {
-  const GAS_URL = "https://script.google.com/macros/s/AKfycbyLiXkqrjliK3z4K8ZKun4YXWc7z3nN3iZt_oNH1q115YJ3ZzaUuUzaCuxUZDgjZHuU9A/exec";
+  const GAS_URL = "https://script.google.com/macros/s/AKfycbw0xAlekbbME08YaiMQMMB5ngfCDaMEWXicbyU1VlFl8quo1srYmibMD6BPWjdzj_Tb7g/exec";
 
   if (req.method !== "GET") {
     return res.status(405).json({ message: "Method Not Allowed" });
