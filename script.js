@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const nextBtn = document.getElementById("nextWeek");  
 
     let holidayDates = [];
+  
 
   const startHour = 10;
   const endHour = 18;
@@ -193,4 +194,5 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
 });
+
 
