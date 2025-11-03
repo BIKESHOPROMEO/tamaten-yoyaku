@@ -20,10 +20,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     function toLocaleDateString(date) {
-      const y = date.getFullYear();
-      const m = String(date.getMonth() + 1).padStart(2, '0');
-      const d = String(date.getDate()).padStart(2, '0');
-      return '${y}-${m}-${d}';
+        const y = date.getFullYear();
+        const m = String(date.getMonth() + 1).padStart(2, '0');
+        const d = String(date.getDate()).padStart(2, '0');
+        return `${y}-${m}-${d}`;
     }
 
     async function fetchHolidayDates() {
@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   return [...Array(7)].map((_, i) => {
     const d = new Date(sunday);
     d.setDate(sunday.getDate() + i);
-    const dateStr = d.toISOString().split("T")[0];
+    const dateStr = toLocaleDateString(d);
     const day = d.getDay();
 
     const dayClass = holidayDates.includes(dateStr)
