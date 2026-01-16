@@ -198,4 +198,27 @@ document.addEventListener("DOMContentLoaded", async () => {
     weekOffset++;
     renderCalendar();
   });
+
+  //自動更新ロジック（10分操作無しでページ更新）
+  let idleTime = 0;
+  const IDLE_LIMIT = 10;
+
+  //1分ごとにチェックするタイマー
+  const idleInterval = setInterval(() => {
+      idleTime++;
+      if (idleTime >= IDLE_LIMIT) {
+        window.location.reload();
+      }
+  }, 60000);
+
+  //画面操作があればカウントをリセット
+  ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart'].forEach(eventName => {
+    document.addEventListener(eventName, () => {
+      idleTime = 0;
+    });
+  });
+
 });
+
+
+
