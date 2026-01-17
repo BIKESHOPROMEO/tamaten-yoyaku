@@ -199,9 +199,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     renderCalendar();
   });
 
-  //自動更新ロジック（10分操作無しでページ更新）
+  //自動更新ロジック（5分操作無しでページ更新）
   let idleTime = 0;
-  const IDLE_LIMIT = 10;
+  const IDLE_LIMIT = 5;
 
   //1分ごとにチェックするタイマー
   const idleInterval = setInterval(() => {
@@ -219,6 +219,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
 });
+
 
 
 
