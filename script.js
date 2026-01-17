@@ -202,24 +202,42 @@ document.addEventListener("DOMContentLoaded", async () => {
   //自動更新ロジック（5分操作無しでページ更新）
   let idleTime = 0;
   const IDLE_LIMIT = 5;
+  let lastActiveTime = Date.now();
 
   //1分ごとにチェックするタイマー
   const idleInterval = setInterval(() => {
+    if (!document.getElementById('login-box') || localStorage.getItem('isLoggedIn') === 'true') {
       idleTime++;
       if (idleTime >= IDLE_LIMIT) {
         window.location.reload();
       }
+    }
   }, 60000);
+
+  //スマホで「ブラウザを戻した瞬間」を検知する
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') {
+      const now =Date.now();
+      const passedTime = (now - lastActiveTime) / 1000 / 60;
+
+      if (passedTime >= IDLE_LIMIT) {
+        window.location.reload();
+      }
+      idleTime = 0;
+    } else {
+      lastActiveTime = Date.now();
+    }
+  });
 
   //画面操作があればカウントをリセット
   ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart'].forEach(eventName => {
     document.addEventListener(eventName, () => {
       idleTime = 0;
+      lastActiveTime = Date.now();
     });
   });
 
 });
-
 
 
 
