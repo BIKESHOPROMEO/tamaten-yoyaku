@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   //LINE設定
   let lineUserId = "";
-  const MY_LIFF_ID = "2007826137-z2n4agnK";
+  const MY_LIFF_ID = "2007826137-PrTb0Yw1";
 
   async function initializeLiff() {
     try {
