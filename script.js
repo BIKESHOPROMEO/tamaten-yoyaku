@@ -3,6 +3,29 @@ document.addEventListener("DOMContentLoaded", async () => {
   const prevBtn = document.getElementById("prevWeek");
   const nextBtn = document.getElementById("nextWeek");
 
+  //LINE設定
+  let lineUserId = "";
+  const MY_LIFF_ID = "2007826137-z2n4agnK";
+
+  async function initializeLiff() {
+    try {
+      await liff.init({ liffId: MY_LIFF_ID });
+      if (liff.isInClient()) {
+        if (!liff.isLoggedIn()) {
+          liff.login();
+        } else {
+          const profile = await liff.getProfile();
+          lineUserId = profile.userId;
+          console.log("LINE ID取得成功:", lineUserId);
+    }
+        } else {
+          console.log("外部ブラウザのためID取得スキップ");
+        }
+      } catch (err) {
+        console.error("LIFF初期化失敗:", err);
+      }
+    }          
+
     let holidayDates = [];
 
   const startHour = 10;
@@ -37,6 +60,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 }
 
   showLoading();
+  await initializeLiff();
 
   function generateDates(offset) {
   const today = new Date();
@@ -184,6 +208,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     const url = new URL("https://yoyaku-form.vercel.app/");
     url.searchParams.set("date", date);
     url.searchParams.set("time", time);
+
+    if (lineUserId) {
+      url.searchParams.set("lineId", lineUserId);
+    }
     window.location.href = url.toString();
   }
 });
@@ -238,6 +266,3 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
 });
-
-
-
