@@ -212,6 +212,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (lineUserId) {
       url.searchParams.set("lineId", lineUserId);
     }
+
+    alert("今からこのURLに飛びます:\n" + url.toString());
+
     window.location.href = url.toString();
   }
 });
